@@ -15,17 +15,15 @@ class PollConfigSerializer(Serializer):
     options = ListField(child=CharField(), allow_empty=False)
 
     def create(self, validated_data):
-        poll_equal_width = validated_data['equal_width']
-        poll_title = safe_html(validated_data['title'])
-        poll_option_names = [safe_html(str(option_name))
-                             for option_name
-                             in validated_data['options']]
+        poll_equal_width = validated_data["equal_width"]
+        poll_title = safe_html(validated_data["title"])
+        poll_option_names = [
+            safe_html(str(option_name)) for option_name in validated_data["options"]
+        ]
 
         with transaction.atomic():
-            poll = Poll.objects.create(title=poll_title,
-                                       equal_width=poll_equal_width)
+            poll = Poll.objects.create(title=poll_title, equal_width=poll_equal_width)
             for i, option_name in enumerate(poll_option_names):
-                PollOption.objects.create(poll=poll, position=i,
-                                          name=option_name)
+                PollOption.objects.create(poll=poll, position=i, name=option_name)
 
             return poll

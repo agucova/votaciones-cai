@@ -23,6 +23,7 @@ Licensed under GNU GPL v3 or later
         <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}?sha1=6a800a3f645fe42576b63a2e41e1461710cd0382">
     </head>
     <body>
+        {% if user.is_authenticated %}
         <div id='stage'>
             <div id='preview'>
                 <div id='poll'></div>
@@ -43,6 +44,10 @@ Licensed under GNU GPL v3 or later
                 </div>
             </div>
         </div>
+        {% else %}
+        <h1>Debes iniciar sesión!</h1>
+        <a href="{% provider_login_url 'google' %}">Iniciar sesión con tu cuenta UC</a>
+        {% endif %}
         <footer>
             {% include 'html/footer.htm' %}
         </footer>

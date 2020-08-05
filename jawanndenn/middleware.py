@@ -16,7 +16,7 @@ def set_remote_addr_to_x_forwarded_for(get_response):
     @wraps(get_response)
     def process_request(request):
         try:
-            request.META['REMOTE_ADDR'] = request.META['HTTP_X_FORWARDED_FOR']
+            request.META["REMOTE_ADDR"] = request.META["HTTP_X_FORWARDED_FOR"]
         except KeyError:
             pass
 
