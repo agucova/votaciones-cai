@@ -76,6 +76,8 @@ def poll_post_view(request):
 
 
 @require_GET
+# TODO: añadir la condicional del JSON
+@login_required
 @_except_poll_does_not_exist
 def poll_data_get_view(request, poll_id):
     with transaction.atomic():
@@ -99,6 +101,7 @@ def poll_data_get_view(request, poll_id):
     data = {
         "config": poll_config,
         "votes": votes,
+        "user_full_name": request.user.get_full_name()
     }
 
     return JsonResponse(data)
@@ -127,8 +130,6 @@ def vote_post_view(request, poll_id):
                 ", please contact the administrator."
             )
 
-        voter_name = safe_html(request.POST.get("voterName"))
-
         try:
             voter_user = request.user.profile
         except Profile.DoesNotExist:
@@ -139,7 +140,7 @@ def vote_post_view(request, poll_id):
         ]
 
         ballot = Ballot.objects.create(
-            poll=poll, voter_name=voter_name, voter_user=voter_user
+            poll=poll, voter_user=voter_user
         )
         for option, vote in zip(poll.options.order_by("position"), votes):
             Vote.objects.create(ballot=ballot, option=option, choice=vote)

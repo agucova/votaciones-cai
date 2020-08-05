@@ -30,7 +30,7 @@ Licensed under GNU GPL v3 or later
 
                 $.get( pollDataUrl, function(data) {
                     var poll = $( '#poll' );
-                    poll.html( createPollHtml( data.config, data.votes, Mode.LIVE, '{{ csrf_token }}' ) );
+                    poll.html( createPollHtml( data.config, data.votes, Mode.LIVE, '{{ csrf_token }}', data.user_full_name ) );
                     $( '#pollForm' ).attr( 'action', voteUrl );
                     if (data.config.equal_width) {
                         equalizeWidth( poll );

@@ -92,23 +92,11 @@ var _addExistingVoteRows = function (table, options, votes) {
     return votesPerOption;
 };
 
-var _addCurrentPersonRow = function (table, options, previewMode) {
+var _addCurrentPersonRow = function (table, options, previewMode, user_full_name) {
     var tr = table.child(tag('tr'));
-    var inputAttr = {
-        id: 'voterName',
-        name: 'voterName',
-        type: 'text',
-        class: 'person',
-        placeholder: 'Tu nombre'
-    };
-    if (!previewMode) {
-        inputAttr.autofocus = 'autofocus';
-        // NOTE: onchange fires "too late"
-        inputAttr.onkeydown = 'onChangeVoterName(this);';
-    }
     tr.child(tag('td', {
-        class: 'person'
-    })).child(tag('input', inputAttr));
+        class: 'person',
+    })).child(user_full_name);
 
     $.each(options, function (j, option) {
         var checkbox = tag('input', {
@@ -134,13 +122,23 @@ var _addCurrentPersonRow = function (table, options, previewMode) {
         td.child(checkbox_hidden_value);
     });
     var toolsTd = tr.child(tag('td'));
-    toolsTd.child(tag('input', {
-        id: 'submitVote',
-        type: 'submit',
-        disabled: 'disabled',
-        class: 'waves-effect waves-light btn',
-        value: 'Enviar',
-    }));
+    if (previewMode) {
+        toolsTd.child(tag('input', {
+            id: 'submitVote',
+            type: 'submit',
+            disabled: disabled,
+            class: 'waves-effect waves-light btn',
+            value: 'Enviar',
+        }));
+    }
+    else {
+        toolsTd.child(tag('input', {
+            id: 'submitVote',
+            type: 'submit',
+            class: 'waves-effect waves-light btn',
+            value: 'Enviar',
+        }));
+    }
 };
 
 var _addSummaryRow = function (table, options, votesPerOption) {
@@ -159,7 +157,7 @@ var _addSummaryRow = function (table, options, votesPerOption) {
     tr.child(tag('td'));
 };
 
-var createPollHtml = function (config, votes, previewMode, csrf_token) {
+var createPollHtml = function (config, votes, previewMode, csrf_token, user_full_name) {
     var div = tag('div', {
         class: 'card-panel'
     });
@@ -182,7 +180,7 @@ var createPollHtml = function (config, votes, previewMode, csrf_token) {
 
     _addHeaderRow(table, config.options);
     var votesPerOption = _addExistingVoteRows(table, config.options, votes);
-    _addCurrentPersonRow(table, config.options, previewMode);
+    _addCurrentPersonRow(table, config.options, previewMode, user_full_name);
     _addSummaryRow(table, config.options, votesPerOption);
     return toHtml(div);
 };
@@ -214,13 +212,13 @@ var onClickCheckBox = function (checkbox) {
 
     if (checkbox.checked && !checkbox.readOnly) {
         var diff = +1;
-        checkbox_hidden_value.value="A"
+        checkbox_hidden_value.value = "A"
     } else if (!checkbox.checked && checkbox.readOnly) {
         var diff = -1;
-        checkbox_hidden_value.value="N"
+        checkbox_hidden_value.value = "N"
     } else {
         var diff = 0;
-        checkbox_hidden_value.value="R"
+        checkbox_hidden_value.value = "R"
     }
 
     var sumTdId = checkbox.id.replace(/^option/, 'sum');
