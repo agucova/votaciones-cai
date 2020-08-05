@@ -139,7 +139,7 @@ var _addCurrentPersonRow = function (table, options, previewMode) {
         type: 'submit',
         disabled: 'disabled',
         class: 'waves-effect waves-light btn',
-        value: 'Save',
+        value: 'Enviar',
     }));
 };
 
