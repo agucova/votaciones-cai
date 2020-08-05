@@ -175,7 +175,7 @@ class Migration(migrations.Migration):
             ],
             options={"unique_together": {("ballot", "option")},},
         ),
-"""         migrations.CreateModel(
+        """         migrations.CreateModel(
             name="Consejo",
             fields=[
                 ("nombre", models.CharField(max_length=50)),
@@ -187,5 +187,5 @@ class Migration(migrations.Migration):
                 ),
                 ("futuros_miembros", models.TextField(editable=True, null=True)),
             ],
-        ), """
+        ), """,
     ]

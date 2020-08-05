@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "django_extensions",  # for management command "show_urls",
-    'annoying', # for AutoOneToOneField
+    "annoying",  # for AutoOneToOneField
     "jawanndenn",
 ]
 

@@ -56,6 +56,7 @@ class Vote(models.Model):
     class Meta:
         unique_together = ("ballot", "option")
 
+
 """
 class Consejo(models.Model):
     nombre = models.CharField(max_length=50)
