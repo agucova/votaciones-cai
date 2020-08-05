@@ -3,6 +3,7 @@
 import os
 import sys
 
+
 def _process_django_secret_key_file(filename):
     secret_key_encoding = "utf-8"
     try:
@@ -13,6 +14,7 @@ def _process_django_secret_key_file(filename):
         with open(filename, "w", encoding=secret_key_encoding) as f:
             f.write(secret_key)
     return secret_key
+
 
 def main():
     secret_key = _process_django_secret_key_file(

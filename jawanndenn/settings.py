@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
-    "django_extensions",  # for management command "show_urls"
+    "django_extensions",  # for management command "show_urls",
+    'annoying', # for AutoOneToOneField
     "jawanndenn",
 ]
 
@@ -235,5 +236,5 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-ACCOUNT_AUTHENTICATION_METHOD="username_email"
-ACCOUNT_USERNAME_REQUIRED=False
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_USERNAME_REQUIRED = False

@@ -10,12 +10,13 @@ from django.http import HttpResponseBadRequest, HttpResponseNotFound, JsonRespon
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_GET, require_POST
+from django.contrib.auth.decorators import login_required
 from django.views.defaults import bad_request
 from rapidjson import JSONDecodeError
 from rest_framework.exceptions import ValidationError
 
 from jawanndenn.markup import safe_html
-from jawanndenn.models import Ballot, Poll, Vote
+from jawanndenn.models import Ballot, Poll, Vote, Profile
 from jawanndenn.serializers import PollConfigSerializer
 
 
@@ -51,6 +52,7 @@ def index_get_view(request):
 
 
 @require_POST
+@login_required
 @_except_validation_error
 def poll_post_view(request):
     config_json = request.POST.get("config", "{}")
@@ -102,6 +104,7 @@ def poll_data_get_view(request, poll_id):
 
 
 @require_GET
+@login_required
 @_except_poll_does_not_exist
 def poll_get_view(request, poll_id):
     Poll.objects.get(slug=poll_id)
@@ -110,6 +113,7 @@ def poll_get_view(request, poll_id):
 
 
 @require_POST
+@login_required
 @_except_poll_does_not_exist
 def vote_post_view(request, poll_id):
     with transaction.atomic():
@@ -123,11 +127,19 @@ def vote_post_view(request, poll_id):
             )
 
         voter_name = safe_html(request.POST.get("voterName"))
+
+        try:
+            voter_user = request.user.profile
+        except Profile.DoesNotExist:
+            return HttpResponseBadRequest("User has no profile.")
+
         votes = [
             request.POST.get(f"option{i}-value") for i in range(poll.options.count())
         ]
 
-        ballot = Ballot.objects.create(poll=poll, voter_name=voter_name)
+        ballot = Ballot.objects.create(
+            poll=poll, voter_name=voter_name, voter_user=voter_user
+        )
         for option, vote in zip(poll.options.order_by("position"), votes):
             Vote.objects.create(ballot=ballot, option=option, choice=vote)
 

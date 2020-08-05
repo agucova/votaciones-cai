@@ -93,7 +93,7 @@ _limit_write_access = ratelimit(key="user_or_ip", rate="30/m", block=True)
 _app_urlpatterns = [
     path("", _limit_read_access(index_get_view), name="frontpage"),
     # path("accounts", _limit_write_access(include('allauth.urls')), name="accounts"),
-    path('accounts/', include('allauth.urls')),
+    path("accounts/", include("allauth.urls")),
     path("create", _limit_write_access(poll_post_view), name="poll-creation"),
     path("data/<poll_id>", _limit_read_access(poll_data_get_view), name="poll-data"),
     path("poll/<poll_id>", _limit_read_access(poll_get_view), name="poll-detail"),

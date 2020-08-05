@@ -9,6 +9,8 @@ from django.urls import reverse
 from django.utils import timezone
 from parameterized import parameterized
 
+from random import choice
+
 from jawanndenn.models import Ballot, Poll
 from jawanndenn.tests.factories import (
     BallotFactory,
@@ -22,7 +24,7 @@ class AdminLoginPageTest(TestCase):
     def test(self):
         url = reverse("admin:index")
         response = self.client.get(url, follow=True)
-        self.assertContains(response, "Django administration")
+        self.assertContains(response, "administración")
 
 
 class IndexGetViewTest(TestCase):
@@ -31,7 +33,7 @@ class IndexGetViewTest(TestCase):
 
         response = self.client.get(url)
 
-        self.assertContains(response, "Create a new poll")
+        self.assertContains(response, "Crear una votación")
 
 
 class PollPostViewTest(TestCase):
@@ -85,7 +87,7 @@ class PollDataGetViewTest(TestCase):
         cls.ballot = BallotFactory(poll=cls.poll)
         cls.votes = [
             VoteFactory(
-                ballot=cls.ballot, option__poll=cls.poll, choice=(position == 0)
+                ballot=cls.ballot, option__poll=cls.poll, choice=choice(["A", "R", "N"])
             )
             for position in range(2)
         ]
@@ -126,7 +128,7 @@ class PollGetViewTest(TestCase):
 
         response = self.client.get(url)
 
-        self.assertContains(response, "Vote!")
+        self.assertContains(response, "Vota!")
 
     def test_poll_does_not_exist(self):
         url = reverse("poll-detail", args=["no_such_poll"])
@@ -149,8 +151,8 @@ class VotePostViewTest(TestCase):
         voter_name = "Maria"
         data = {
             "voterName": voter_name,
-            "option0": "on",
-            "option1": "off",
+            "option0-value": "A",
+            "option1-value": "R",
         }
 
         response = self.client.post(url, data)
@@ -162,7 +164,7 @@ class VotePostViewTest(TestCase):
                     "choice", flat=True
                 )
             ),
-            [True, False],
+            ["A", "R"],
         )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)

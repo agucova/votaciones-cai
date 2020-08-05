@@ -7,6 +7,8 @@ import os
 from django.db import models
 from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel
+from django.contrib.auth.models import User
+from annoying.fields import AutoOneToOneField
 
 
 def _get_random_sha256():
@@ -31,18 +33,42 @@ class PollOption(models.Model):
         unique_together = ("poll", "position")
 
 
+class Profile(models.Model):
+    user = AutoOneToOneField(User, primary_key=True, on_delete=models.CASCADE)
+
+
 class Ballot(TimeStampedModel):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name="ballots")
     voter_name = models.CharField(max_length=255)
+    voter_user = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="ballots"
+    )
 
 
 class Vote(models.Model):
     ballot = models.ForeignKey(Ballot, related_name="votes", on_delete=models.CASCADE)
     option = models.ForeignKey(PollOption, on_delete=models.CASCADE)
-    # opciones múltiples
+
     apruebo, nulo, rechazo = "A", "N", "R"
     ALTERNATIVAS = [(apruebo, "Apruebo"), (nulo, "Nulo"), (rechazo, "Rechazo")]
     choice = models.CharField(max_length=2, choices=ALTERNATIVAS, default=nulo)
 
     class Meta:
         unique_together = ("ballot", "option")
+
+"""
+class Consejo(models.Model):
+    nombre = models.CharField(max_length=50)
+    miembros = models.ManyToManyField(Profile, related_name="consejos")
+    futuros_miembros = models.TextField()
+
+    def agregar_miembros(self):
+        por_procesar = self.futuros_miembros.strip().split(",")
+        usuarios = User.objects.all()
+        emails = [usuario.email for usuario in usuarios]
+        for miembro in por_procesar:
+            if miembro in emails:
+                a_agregar = Profile.get(user__email=miembro)
+                print("Agregando a", miembro, "a", self.nombre)
+                a_agregar.consejos.add(self)
+ """
