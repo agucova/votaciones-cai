@@ -89,11 +89,12 @@ def poll_data_get_view(request, poll_id):
         }
         votes = [
             [
-                ballot.voter_name,
+                ballot.voter_user.user.get_full_name(),
                 [vote.choice for vote in ballot.votes.order_by("option__position")],
             ]
             for ballot in poll.ballots.order_by("created", "id")
         ]
+        print(votes)
 
     data = {
         "config": poll_config,
