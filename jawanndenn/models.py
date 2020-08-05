@@ -43,7 +43,16 @@ class Vote(models.Model):
     ballot = models.ForeignKey(Ballot, related_name='votes',
                                on_delete=models.CASCADE)
     option = models.ForeignKey(PollOption, on_delete=models.CASCADE)
-    yes = models.BooleanField()
+    # opciones múltiples
+    apruebo, nulo, rechazo = "A", "N", "R"
+    ALTERNATIVAS = [
+        (apruebo, "Apruebo"),
+        (nulo, "Nulo"),
+        (rechazo, "Rechazo")
+    ]
+    choice = models.CharField(max_length=2,
+    choices=ALTERNATIVAS,
+    default=nulo)
 
     class Meta:
         unique_together = ('ballot', 'option')

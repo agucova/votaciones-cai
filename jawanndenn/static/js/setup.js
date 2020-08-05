@@ -17,12 +17,12 @@ $.each( _REPLACEMENTS_IN_ORDER, function(_, row) {
     _CLOSING_OF[prefix] = closing;
 });
 
-var exampleOptions = ['Apple', 'Banana', 'Orange', 'Papaya'];
+var exampleOptions = ['Manzana', 'Plátano', 'Naranja', 'Papaya'];
 
 var exampleVotesCache = {};
 
 var createExampleVotes = function(options) {
-    var examplePeople = ['Dmitri', 'Jule', 'Vered', 'Matthieu'];
+    var examplePeople = ['María', 'Manuel', 'Catalina', 'Itzae'];
 
     var exampleVotes = [];
     $.each( examplePeople, function( i, person ) {
@@ -47,7 +47,7 @@ var getExampleVotesCached = function(options) {
 
 var exampleConfigJson = JSON.stringify( {
         equal_width: false,
-        title: 'Which fruit do *you* like?',
+        title: 'Qué fruta prefieres?',
         options: exampleOptions
         }, null, '  ' );
 
@@ -134,7 +134,7 @@ var sync = function() {
     }
 
     if (wellformed != prevWellformed) {
-        addRemoveGoodBad( $( "#config" ),
+        addRemoveGoodBadNull( $( "#config" ),
                 'wellformed', 'malformed', wellformed );
         enableButton( $('#createButton'), wellformed );
         prevWellformed = wellformed;

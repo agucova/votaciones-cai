@@ -64,8 +64,7 @@ def poll_post_view(request):
     with transaction.atomic():
         if Poll.objects.count() >= settings.JAWANNDENN_MAX_POLLS:
             return HttpResponseBadRequest(
-                f'Maximum number of {settings.JAWANNDENN_MAX_POLLS} polls '
-                'reached, please contact the administrator.')
+                f'Se ha alcanzado el límite de {settings.JAWANNDENN_MAX_POLLS} votaciones, contacta al administrador. ')
 
         poll = serializer.save()
 
@@ -84,7 +83,7 @@ def poll_data_get_view(request, poll_id):
                             .values_list('name', flat=True)),
         }
         votes = [
-            [ballot.voter_name, [vote.yes for vote
+            [ballot.voter_name, [vote.choice for vote
                                  in ballot.votes.order_by('option__position')]]
             for ballot
             in poll.ballots.order_by('created', 'id')
@@ -120,13 +119,13 @@ def vote_post_view(request, poll_id):
 
         voter_name = safe_html(request.POST.get('voterName'))
         votes = [
-            request.POST.get(f'option{i}', 'off') == 'on'
+            request.POST.get(f'option{i}-value')
             for i
             in range(poll.options.count())
         ]
 
         ballot = Ballot.objects.create(poll=poll, voter_name=voter_name)
         for option, vote in zip(poll.options.order_by('position'), votes):
-            Vote.objects.create(ballot=ballot, option=option, yes=vote)
+            Vote.objects.create(ballot=ballot, option=option, choice=vote)
 
     return redirect(poll)

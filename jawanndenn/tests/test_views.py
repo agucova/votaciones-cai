@@ -80,7 +80,7 @@ class PollDataGetViewTest(TestCase):
         cls.ballot = BallotFactory(poll=cls.poll)
         cls.votes = [
             VoteFactory(ballot=cls.ballot, option__poll=cls.poll,
-                        yes=(position == 0))
+                        choice=(position == 0))
             for position
             in range(2)
         ]
@@ -94,7 +94,7 @@ class PollDataGetViewTest(TestCase):
                 'title': self.poll.title,
             },
             'votes': [
-                [self.ballot.voter_name, [v.yes for v in self.votes]],
+                [self.ballot.voter_name, [v.choice for v in self.votes]],
             ],
         }
 
@@ -155,7 +155,7 @@ class VotePostViewTest(TestCase):
         ballot = Ballot.objects.get(poll=self.poll)
         self.assertEqual(list(ballot.votes
                               .order_by('option__position')
-                              .values_list('yes', flat=True)), [True, False])
+                              .values_list('choice', flat=True)), [True, False])
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertEqual(response.url, self.poll.get_absolute_url())

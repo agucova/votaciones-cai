@@ -7,7 +7,7 @@ Licensed under GNU GPL v3 or later
 -->
 <html lang="en">
     <head>
-        <title>jawanndenn: Vote!</title>
+        <title>votaciones-cai: Vota!</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -37,7 +37,7 @@ Licensed under GNU GPL v3 or later
                     }
                 }, 'json')
                 .fail(function() {
-                    var html = 'Error: Poll data could not be loaded.';
+                    var html = 'Error: No se pudo cargar la votación.';
                     noty({text: html, type: 'error', timeout: null});
                 });
             });

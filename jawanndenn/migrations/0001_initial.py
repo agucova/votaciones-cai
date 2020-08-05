@@ -62,7 +62,7 @@ class Migration(migrations.Migration):
             name='Vote',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('yes', models.BooleanField()),
+                ('choice', models.CharField(max_length=2, choices=[("A", "Apruebo"), ("N", "Nulo"), ("R", "Rechazo")], default="N")),
                 ('ballot', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='votes', to='jawanndenn.Ballot')),
                 ('option', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='jawanndenn.PollOption')),
             ],

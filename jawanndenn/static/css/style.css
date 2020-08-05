@@ -175,6 +175,15 @@ td.person {
     text-align: center;
 }
 
+.votoApruebo {
+    background-color: #dfd;
+}
+.votoRechazo {
+    background-color: #fdd;
+}
+.votoNulo {
+    background-color: #d2e8fc;
+}
 .votedYes {
     background-color: #dfd;
 }

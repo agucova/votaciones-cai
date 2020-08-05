@@ -7,7 +7,7 @@ Licensed under GNU GPL v3 or later
 -->
 <html lang="en">
     <head>
-        <title>jawanndenn: Create a new poll</title>
+        <title>votaciones-cai: Crear una votación</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -33,11 +33,11 @@ Licensed under GNU GPL v3 or later
                         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                         <div class="input-field">
                             <textarea id="config" name="config" class="materialize-textarea monospace-text"></textarea>
-                            <label for="config">Setup (JSON)</label>
+                            <label for="config">Configuración (JSON)</label>
                         </div>
                         <div id="setupButtons">
-                            <button type="submit" id='createButton' onclick="$( '#setupForm' ).submit();" class="waves-effect waves-light btn" disabled="disabled">Create</button>
-                            <button type="button" id='resetButton' onclick="resetConfig();" class="waves-effect waves-light btn btn-flat">Reset</button>
+                            <button type="submit" id='createButton' onclick="$( '#setupForm' ).submit();" class="waves-effect waves-light btn" disabled="disabled">Crear</button>
+                            <button type="button" id='resetButton' onclick="resetConfig();" class="waves-effect waves-light btn btn-flat">Resetear</button>
                         </div>
                     </form>
                 </div>
