@@ -21,6 +21,11 @@ var exampleOptions = ['Manzana', 'Plátano', 'Naranja', 'Papaya'];
 
 var exampleVotesCache = {};
 
+function choose(choices) {
+    var index = Math.floor(Math.random() * choices.length);
+    return choices[index];
+  }
+
 var createExampleVotes = function(options) {
     var examplePeople = ['María', 'Manuel', 'Catalina', 'Itzae'];
 
@@ -28,7 +33,7 @@ var createExampleVotes = function(options) {
     $.each( examplePeople, function( i, person ) {
         var votes = [];
         $.each( options, function() {
-            votes.push( Math.random() > 0.5 );
+            votes.push( choose(["A", "N", "R"]) );
         });
         exampleVotes.push( [person, votes] );
     });
@@ -46,8 +51,9 @@ var getExampleVotesCached = function(options) {
 };
 
 var exampleConfigJson = JSON.stringify( {
+        title: '¿Qué fruta te gusta mas a **ti**?',
         equal_width: false,
-        title: 'Qué fruta prefieres?',
+        login_uc: false,
         options: exampleOptions
         }, null, '  ' );
 
@@ -134,7 +140,7 @@ var sync = function() {
     }
 
     if (wellformed != prevWellformed) {
-        addRemoveGoodBadNull( $( "#config" ),
+        addRemoveGoodBad( $( "#config" ),
                 'wellformed', 'malformed', wellformed );
         enableButton( $('#createButton'), wellformed );
         prevWellformed = wellformed;

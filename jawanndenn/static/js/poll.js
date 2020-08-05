@@ -184,7 +184,6 @@ var createPollHtml = function (config, votes, previewMode, csrf_token) {
     var votesPerOption = _addExistingVoteRows(table, config.options, votes);
     _addCurrentPersonRow(table, config.options, previewMode);
     _addSummaryRow(table, config.options, votesPerOption);
-
     return toHtml(div);
 };
 
